@@ -1,0 +1,149 @@
+var mysql = require("mysql");
+var inquirer = require("inquirer");
+
+var connection = mysql.createConnection({
+  host: "localhost",
+
+  // Your port; if not 3306
+  port: 3306,
+
+  // Your username
+  user: "root",
+
+  // Your password
+  password: "",
+  database: "mysqlReview"
+});
+
+connection.connect(function (err) {
+  if (err) throw err;
+  runSearch();
+});
+
+function runSearch() {
+  inquirer
+    .prompt({
+      name: "action",
+      type: "rawlist",
+      message: "What would you like to do?",
+      choices: [
+
+        "Find movies by name",
+        "Find find movies within a specific time frame",
+        "Find top 10 movies",
+        "Exit App"
+      ]
+    })
+    .then(function (answer) {
+      switch (answer.action) {
+        case "Find movies by name":
+          movieSearch();
+          break;
+
+        case "Find find movies within a specific time frame":
+          rangeSearch();
+          break;
+
+        case "Find top 10 movies":
+          ratingSearch();
+          break;
+
+        case "Exit App":
+          quit()
+          break;
+      }
+    });
+}
+
+const movieSearch = () => {
+  inquirer
+    .prompt({
+      name: "title",
+      type: "input",
+      message: "What movie would you like to search for?"
+    })
+    .then(function (answer) {
+      var query =
+      `
+  mysql code here
+      `;
+      connection.query(query, {???}, function (err, res) {
+        for (var i = 0; i < res.length; i++) {
+          console.log('-_--_--_--_--_--_--_--_--_--_--_--_--');
+
+          console.log(`Title: ${???} || Year: ${???}|| Genre: ${???} || Score: ${???}`);
+          
+          console.log('-_--_--_--_--_--_--_--_--_--_--_--_--');
+        }
+        runSearch();
+      });
+    });
+}
+
+
+const rangeSearch = () => {
+  inquirer
+    .prompt([
+      {
+        name: "start",
+        type: "input",
+        message: "Enter starting year: ",
+        validate: function (value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      },
+      {
+        name: "end",
+        type: "input",
+        message: "Enter ending year: ",
+        validate: function (value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      }
+    ])
+    .then(function (answer) {
+      var query = `
+      SELECT 
+      title, year, genre, movie_score 
+      FROM movies 
+      WHERE year 
+      BETWEEN ? AND ?
+      `;
+      connection.query(query, [???, ???], function (err, res) {
+        for (var i = 0; i < res.length; i++) {
+
+          console.log(`Title: ${???} || Year: ${???}|| Genre: ${???} || Score: ${???}`);
+          console.log('-------------------------');
+        }
+        runSearch();
+      });
+    });
+}
+
+const ratingSearch = () => {
+  var query =
+  `
+  query code here
+  `;
+  connection.query(query, function (err, res) {
+    for (var i = 0; i < res.length; i++) {
+      console.log(`Title: ${???} || Year: ${???}|| Score: ${???}`);
+    }
+    runSearch();
+  });
+}
+
+
+const quit = () => {
+  console.log("Goodbye!");
+  process.exit();
+}
+
+
+
