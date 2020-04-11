@@ -3,6 +3,9 @@
 
 -- I want to know how many drama movies there are
 
+-- I want to see the lowest priced rental
+
+-- I want to find the highest priced rental
 
 -- what the sum of all movies rental price
 
