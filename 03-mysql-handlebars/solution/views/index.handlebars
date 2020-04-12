@@ -1,0 +1,70 @@
+<h1>Hearts and Horrors Watch List</h1>
+
+<ul>
+  {{#each movie}}
+    <li>
+      <p>
+        {{this.id}}. {{this.title}} || {{this.year}} || {{this.genre}} || {{this.movie_score}}
+
+        <button data-movieid="{{this.id}}" class="delmovie">Delete</button>
+      </p>
+    </li>
+  {{/each}}
+</ul>
+
+
+<h2>Add a new movie to this Watch List</h2>
+<form id="addmovie" class="button-size">
+	<input type="text" name="title" placeholder="Title"/>
+  <input type="text" name="year" placeholder="year"/>
+  <input type="text" name="genre" placeholder="genre"/>
+  <input type="text" name="movie_score" placeholder="movie score"/>
+	<button type="submit">Save Movie!</button>
+</form>
+
+
+<script type="text/javascript">
+{{!-- add movie --}}
+$("#addmovie").on("submit", function(event) {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    var newMovie = {
+      title: $("#addmovie [name=title]").val().trim(),
+      year: $("#addmovie [name=year]").val().trim(),
+      genre: $("#addmovie [name=genre]").val().trim(),
+     movieScore: $("#addmovie [name=movie_score]").val().trim()
+    };
+
+    // Send the POST request.
+    $.ajax("/api/movies", {
+      type: "POST",
+      data: newMovie
+    }).then(
+      function() {
+        console.log("added new movie");
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+  });
+
+{{!-- delete movie --}}
+  $(".delmovie").on("click", function(event) {
+    var id = $(this).data("movieid");
+
+    // Send the DELETE request.
+    $.ajax("/api/movies/" + id, {
+      type: "DELETE"
+    }).then(
+      function() {
+        console.log("deleted id ", id);
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );    
+  });
+
+
+
+</script>
