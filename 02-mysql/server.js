@@ -63,16 +63,19 @@ const movieSearch = () => {
       message: "What movie would you like to search for?"
     })
     .then(function (answer) {
-      var query =
-      `
-  mysql code here
+      var query = `
+      SELECT 
+      title, 
+      year, 
+      genre, 
+      movie_score 
+      FROM movies 
+      WHERE ?
       `;
-      connection.query(query, {???}, function (err, res) {
+      connection.query(query, { title: answer.title }, function (err, res) {
         for (var i = 0; i < res.length; i++) {
           console.log('-_--_--_--_--_--_--_--_--_--_--_--_--');
-
-          console.log(`Title: ${???} || Year: ${???}|| Genre: ${???} || Score: ${???}`);
-          
+          console.log(`Title: ${res[i].title} || Year: ${res[i].year}|| Genre: ${res[i].genre} || Score: ${res[i].movie_score}`);
           console.log('-_--_--_--_--_--_--_--_--_--_--_--_--');
         }
         runSearch();
@@ -115,10 +118,10 @@ const rangeSearch = () => {
       WHERE year 
       BETWEEN ? AND ?
       `;
-      connection.query(query, [???, ???], function (err, res) {
+      connection.query(query, [answer.start, answer.end], function (err, res) {
         for (var i = 0; i < res.length; i++) {
 
-          console.log(`Title: ${???} || Year: ${???}|| Genre: ${???} || Score: ${???}`);
+          console.log(`Title: ${res[i].title} || Year: ${res[i].year}|| Genre: ${res[i].genre} || Score: ${res[i].movie_score}`);
           console.log('-------------------------');
         }
         runSearch();
@@ -127,13 +130,15 @@ const rangeSearch = () => {
 }
 
 const ratingSearch = () => {
-  var query =
-  `
-  query code here
-  `;
+  var query = `
+  SELECT 
+  title, year, movie_score 
+  FROM movies 
+  ORDER by movie_score 
+  DESC limit 10`;
   connection.query(query, function (err, res) {
     for (var i = 0; i < res.length; i++) {
-      console.log(`Title: ${???} || Year: ${???}|| Score: ${???}`);
+      console.log(`Title: ${res[i].title} || Year: ${res[i].year}|| Score: ${res[i].movie_score}`);
     }
     runSearch();
   });

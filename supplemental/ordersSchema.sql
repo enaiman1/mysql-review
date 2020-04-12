@@ -1,7 +1,7 @@
 USE mysqlReview;
 
 CREATE TABLE orders(
-order_id INT auto_increment NOT NULL PRIMARY KEY,
+order_id INT auto_increment =1000 NOT NULL PRIMARY KEY,
 customer_id INT,
 subscription_id INT,
  purchase_date DATE

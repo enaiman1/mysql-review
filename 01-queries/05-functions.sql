@@ -1,6 +1,5 @@
 -- I want to know how many rows are in the table
 
-
 -- I want to know how many drama movies there are
 
 -- I want to see the lowest priced rental
